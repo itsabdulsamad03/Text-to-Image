@@ -1,0 +1,23 @@
+import express from 'express'
+import cors from 'cors'
+import dotenv from "dotenv";
+dotenv.config();
+
+import ConnectDB from './config/MongoDb.js'
+import userRouter from './routes/userRoutes.js'
+import imageRouter from './routes/imageRoutes.js'
+
+const PORT = process.env.PORT || 4000
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+await ConnectDB()
+
+app.use('/api/user', userRouter)
+app.use('/api/image', imageRouter)
+
+
+app.get('/',(req, res) => res.send("API is working"))
+
+app.listen(PORT, () => console.log("App is running on port " + PORT))
